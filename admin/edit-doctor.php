@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     specialization='$specialization' WHERE id='$id'";
 
     if ($conn->query($sql) === TRUE) {
-        echo "Service updated successfully";
+        echo "";
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
@@ -75,79 +75,32 @@ $conn->close();
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../styles/admin.css">
     <link rel="shortcut icon" href="../assets/img/no-bg-bg.png" type="image/x-icon">
-    <title>Manage Appointment</title>
+    <title>Manage Veterinarian</title>
     
 </head>
 
 <body>
-    <header class="sticky-top">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-              <a class="navbar-logo1" href="#"><img src="../assets/img/no-bg-bg.png" alt="" class="navbar-logo" srcset=""></a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse " id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="../index.php">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="../AboutUs.php">About us</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="../Services.php">Services</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="../appointment_form.php">Booking</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="../appointment_list.php">Appointments</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="../login.php">Log in</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-    </header>
-    <div id="nav">
-        <h1>Admin Panel</h1>
+<?php
+    require_once '../include/header.admin.php';
+?>
+     <div class="container-fluid">
+        <div class="row justify-content-end ">
+        <div class="col-md-2 sidebar">
+    <?php require_once '../include/sidebar.php';?>
     </div>
-    <div id="after-nav">
-      <div id="after-nav-col-1" >
-        <div class="row">
-        <a href="./admin.php"> <h2>Manage Appointments</h2></a>   
-        </div>
-        <div class="row">
-            <a href="./view-doctor.php"><h2>Manage Veterinarian</h2></a>    
-        </div>
-        <div class="row">
-            <a href="./add-doctor.php"><h2>Add Veterinarian</h2></a>    
-        </div>
-        <div class="row">
-            <a href="./remove-doctor.php"> <h2>Remove Veterinarian</h2></a>   
-        </div>
-        <div class="row">
-            <a href="./view-service.php"><h2>Manage Service</h2></a>    
-        </div>
-        <div class="row">
-            <a href="./add-service.php"> <h2>Add Service</h2></a>   
-        </div>
-        <div class="row">
-          <a href="./remove-service.php"> <h2>Remove Service</h2></a>   
-        </div>
-        <div class="row">
-          <a href="../tools/logout.php"> <h2>Log-out</h2></a>   
-        </div>
-    </div>
-         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <div class="col-12 col-lg-6 d-flex justify-content-between align-items-center">
+        <div class="col-md-10">
+        <main class="col-md-9 ms-sm-auto col-md-10 px-md-10">
+        <div class="col-12 col-lg-6 d-flex justify-content-between align-items-center">
                 <h2 class="h3 brand-color pt-3 pb-2">Edit Veterinarian</h2>
                 <a href="view-doctor.php" class="text-primary text-decoration-none"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
             </div>
             <div class="col-12 col-lg-6">
+            <?php
+                // Check if form is submitted and display success message
+                if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save'])) {
+                    echo '<div class="alert alert-success" role="alert">Veterinarian updated successfully</div>';
+                }
+                ?>
               <form method="post" action="">
                   <div class="mb-2">
                       <label for="name" class="form-label">Name</label>
@@ -180,7 +133,9 @@ $conn->close();
               </form>
           </div>
         </main>
-
+        </div>
+        </div>
+    </div>
         <script src="./scripts/admin.js"></script>
 </body>
 

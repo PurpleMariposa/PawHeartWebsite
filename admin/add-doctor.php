@@ -47,51 +47,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../styles/admin.css">
     <link rel="shortcut icon" href="../assets/img/no-bg-bg.png" type="image/x-icon">
-    <title>Manage Appointment</title>
+    <title>Manage Veterinarian</title>
     
 </head>
 
 <body>
 <?php
     require_once '../include/header.admin.php';
-       ?>
-       
-    <div id="nav">
-        <h1>Admin Panel</h1>
-    </div>
-    <div id="after-nav">
-      <div id="after-nav-col-1" >
-        <div class="row">
-        <a href="./admin.php"> <h2>Manage Appointments</h2></a>   
-        </div>
-        <div class="row">
-            <a href="./view-doctor.php"><h2>Manage Veterinarian</h2></a>    
-        </div>
-        <div class="row">
-            <a href="./add-doctor.php"><h2>Add Veterinarian</h2></a>    
-        </div>
-        <div class="row">
-            <a href="./remove-doctor.php"> <h2>Remove Veterinarian</h2></a>   
-        </div>
-        <div class="row">
-            <a href="./view-service.php"><h2>Manage Service</h2></a>    
-        </div>
-        <div class="row">
-            <a href="./add-service.php"> <h2>Add Service</h2></a>   
-        </div>
-        <div class="row">
-          <a href="./remove-service.php"> <h2>Remove Service</h2></a>   
-        </div>
-        <div class="row">
-          <a href="./logout.php"> <h2>Log-out</h2></a>   
-        </div>
-    </div>
+?>
     
-         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="container-fluid">
+        <div class="row justify-content-end ">
+        <div class="col-md-2 sidebar">
+    <?php require_once '../include/sidebar.php';?>
+    </div>
+        <div class="col-md-10">
+        <main class="col-md-9 ms-sm-auto col-md-10 px-md-10">
             <div class="col-12 col-lg-6 d-flex justify-content-between align-items-center">
                 <h2 class="h3 brand-color pt-3 pb-2">Add Veterinarian</h2>
+                <a href="view-doctor.php" class="text-primary text-decoration-none"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</a>
             </div>
             <div class="col-12 col-lg-6">
+            <?php
+                // Check if form is submitted and display success message
+                if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save'])) {
+                    echo '<div class="alert alert-success" role="alert">Veterinarian added successfully</div>';
+                }
+                ?>
                 <form method="post" action="">
             <div class="mb-2">
                     <label for="name" class="form-label">Name</label>
@@ -118,10 +100,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="text" class="form-control" id="specialization" name="specialization">
                 </div>
 
-                    <button type="submit" name="save" class="btn btn-secondary mt-2 mb-3 brand-bg-color" id="addServiceButton">Add Veterinarian</button>
+                    <button type="submit" name="save" class="btn btn-secondary mt-2 mb-3 brand-bg-color" id="addServiceButton">Save</button>
                 </form>
             </div>
         </main>
+        </div>
+        </div>
+    </div>
 
         <script src="./scripts/admin.js"></script>
 </body>

@@ -1,5 +1,17 @@
 <?php
-include '../classess/db.php';
+// Start the session
+session_start();
+
+// Check if the user is not logged in
+if (!isset($_SESSION['admin'])) {
+    // Redirect to the login page
+    header('Location: ./admin_login.php'); // Replace with your actual login page
+    exit();
+}
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+include "../classess/db.php";
 $objDB = new dbConnect();
 $conn = $objDB->connect();
 
@@ -45,29 +57,34 @@ $appointmentCount = $rowAppointments['appointmentCount'];
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../vendor/bootstrap-5.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="../vendor/font-awesome-4.7.0/css/font-awesome.min.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="../assets/css/style.css">
-    <title>Manage Appointment</title>
     <link rel="stylesheet" href="../styles/admin.css">
     <link rel="stylesheet" href=".../assets/css/style.css">
-    <link rel="shortcut icon" href="../assets/img/no-bg-bg.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../assets/img/no-bg-bg.png" type="image/x-icon"> 
+    <title>Manage Appointment</title>
 </head>
 
 <body>
-    <?php
-    require_once '../include/header.admin.php';
-    ?>
+    <?php require_once '../include/header.admin.php';?> 
+
 
     <div class="container-fluid">
-        <div class="row">
-            <?php include '../include/sidebar.php'; ?>
+       <div class="row d-flex justify-content-end">
+            <div class="col-md-2 sidebar">
+                <?php require_once '../include/sidebar.php';?>
+            </div>
 
+            <!-- Main Content -->
+            <div class="col-md-10">
+            <main> 
+    <div class="container-fluid">
+        <div class="row justify-content-center">
             <div id="after-nav" class="col-md-10">
                 <div class="container-fluid">
                     <div class="row">
-                        <!-- Your content goes here -->
-
                         <style>
                             /* Add some basic styles for the box container */
                             .dashboard-container {
@@ -104,17 +121,17 @@ $appointmentCount = $rowAppointments['appointmentCount'];
                                 <div class="dashboard-container">
 
                                     <div class="dashboard-box">
-                                        <h3>Veterinarians Count</h3>
+                                        <h3>Total Veterinarians</h3>
                                         <p><?php echo $veterinarianCount; ?></p>
                                     </div>
 
                                     <div class="dashboard-box">
-                                        <h3>Services Count</h3>
+                                        <h3>Total Services</h3>
                                         <p><?php echo $serviceCount; ?></p>
                                     </div>
 
                                     <div class="dashboard-box">
-                                        <h3>Appointments Count</h3>
+                                        <h3>Total Appointments</h3>
                                         <p><?php echo $appointmentCount; ?></p>
                                     </div>
 
@@ -171,9 +188,38 @@ $appointmentCount = $rowAppointments['appointmentCount'];
             </div>
         </div>
     </div>
+    </main>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Your JavaScript code here
+        function deleteAppointment(id) {
+        var confirmDelete = confirm('Are you sure you want to delete this appointment?');
+
+        if (confirmDelete) {
+            // Send an AJAX request to delete the appointment
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'delete-appointment.php', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                if (xhr.status == 200) {
+                    // Update the table or display a success message
+                    alert('Appointment deleted successfully! Please reload the page.');
+                    // You may want to refresh the page or update the table without reloading
+                } else {
+                    alert('Error: ' + xhr.status);
+                }
+            };
+
+            xhr.send('id=' + id);
+        }
+    }
+
+    function editAppointment(id) {
+            // Redirect to the edit-appointment.php page with the appointment ID
+            window.location.href = 'edit-appointment.php?id=' + id;
+        }
     </script>
 
     <?php

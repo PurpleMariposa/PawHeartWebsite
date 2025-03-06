@@ -1,29 +1,36 @@
 <?php
-    //resume session here to fetch session values
-    session_start();
-    /*
-        if user is login then redirect to dashboard page
-    */
-    if (isset($_SESSION['user']) && $_SESSION['user'] == 'admin'){
-        header('location: ./dashboard.php');
-    }
+require_once("../classess/db.php"); // Include your database connection file
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+session_start();
 
-    //if the login button is clicked
-    require_once('../classess/admin.class.php');
-    
-    if (isset($_POST['login'])) {
-        $account = new Account();
-        $account->email = htmlentities($_POST['email']);
-        $account->password = htmlentities($_POST['password']);
-        if ($account->sign_in_admin()){
-            $_SESSION['user'] = 'admin';
-            header('location: ./dashboard.php');
-        }else{
-            $error =  'Invalid email/password. Try again.';
+// Check if the form is submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get user input
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    // Validate user input (you may add more validation as needed)
+
+    // Query to check if the user exists in the database
+    $query = "SELECT * FROM admin WHERE email = '$email' AND password = '$password'";
+    $result = mysqli_query($connection, $query);
+
+    if ($result) {
+        // Check if the user exists
+        if (mysqli_num_rows($result) > 0) {
+            // User found, redirect to the admin dashboard
+            $_SESSION['admin'] = true;
+            header('Location: ./admin.php'); // Update with your actual admin dashboard page
+            exit();
+        } else {
+            $error_message = "Invalid email or password";
         }
+    } else {
+        $error_message = "Error executing query: " . mysqli_error($connection);
     }
-    
-    //if the above code is false then html below will be displayed
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
